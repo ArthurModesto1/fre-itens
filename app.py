@@ -43,10 +43,10 @@ empresas_unicas = sorted(empresas_csv | empresas_excel)
 # Mapeamento dos itens FRE para CódigoQuadro
 FRE_ITEMS = {
     "8.1": "8030",
-    "8.2": "8040",
+    "8.2": "8421",
     "8.4": "8120",
-    "8.5": "8130",
-    "8.6": "8140",
+    "8.5": "8437",
+    "8.6": "8438",
     "8.7": "8150",
     "8.8": "8160",
     "8.9": "8170",
