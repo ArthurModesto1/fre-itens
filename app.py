@@ -70,7 +70,7 @@ if empresas_unicas:
             "8.9": "8170",
             "8.10": "8300",
             "8.11": "8190",
-            "8.12": "8200"
+            "8.12": "8360"
         }
         codigo_quadro = mapeamento_quadros.get(item, "8030")
         return f"https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx?NumeroSequencialDocumento={doc_number}&CodigoGrupo=8000&CodigoQuadro={codigo_quadro}"
