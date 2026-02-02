@@ -61,15 +61,15 @@ if empresas_unicas:
         """Gera a URL do documento FRE com mapeamento de quadros"""
         mapeamento_quadros = {
             "8.1": "8030",
-            "8.2": "",
+            "8.2": "8060",
             "8.4": "8120",
-            "8.5": "",
+            "8.5": "8150",
             "8.6": "8180",
             "8.7": "8210",
             "8.8": "8240",
             "8.9": "8270",
             "8.10": "8300",
-            "8.11": "",
+            "8.11": "8330",
             "8.12": "8360"
         }
         codigo_quadro = mapeamento_quadros.get(item, "8030")
