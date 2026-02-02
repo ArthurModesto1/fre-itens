@@ -1,29 +1,25 @@
 import streamlit as st
 import requests
-import base64
 import pandas as pd
 import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
-st.title("📄 Visualizador de Documentos FRE - CVM")
+st.set_page_config(layout="wide")
+st.title("📄 Visualizador de Documentos FRE – CVM")
 
-# URLs dos arquivos CSV e Excel (versões otimizadas no GitHub)
 CSV_URL = "https://github.com/tovarich86/FRE-8.1/raw/main/fre_cia_aberta_2025.csv"
 PLANOS_URL = "https://github.com/tovarich86/FRE-8.1/raw/main/tabela_consolidada_cvm_otimizado.xlsx"
 
 @st.cache_data
 def load_data():
-    """Carrega os dados otimizados do CSV e do Excel"""
-    df_fre = pd.read_csv(CSV_URL, sep=';', dtype=str, encoding="latin-1")
+    df_fre = pd.read_csv(CSV_URL, sep=";", dtype=str, encoding="latin-1")
     df_planos = pd.read_excel(PLANOS_URL, dtype=str)
 
-    # Função para padronizar nomes de empresas
     def normalize_company_name(name):
         if pd.isna(name):
             return None
         name = name.upper().strip()
-        # Padronizar variações de S.A.
         name = re.sub(r"\s+(S\.?A\.?|S/A|SA)$", " S.A.", name)
         return name
 
@@ -32,83 +28,118 @@ def load_data():
 
     return df_fre, df_planos
 
+@st.cache_data
+def extract_document_number(url):
+    if pd.isna(url):
+        return None
+    parsed = urlparse(url)
+    params = parse_qs(parsed.query)
+    return params.get("NumeroSequencialDocumento", [None])[0]
+
+@st.cache_data
+def get_fre_items(numero_documento):
+    """
+    Busca no índice do FRE quais itens existem
+    e seus respectivos CodigoQuadro reais
+    """
+    url = (
+        "https://www.rad.cvm.gov.br/ENET/frmConsultaFRE.aspx"
+        f"?NumeroSequencialDocumento={numero_documento}"
+    )
+
+    response = requests.get(url, timeout=15)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    itens = {}
+
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+
+        if "frmExibirArquivoFRE.aspx" in href:
+            parsed = urlparse(href)
+            params = parse_qs(parsed.query)
+
+            codigo_quadro = params.get("CodigoQuadro", [None])[0]
+            texto = a.get_text(strip=True)
+
+            # Captura apenas itens do capítulo 8
+            match = re.match(r"(8\.\d+)", texto)
+            if match and codigo_quadro:
+                item = match.group(1)
+                itens[item] = codigo_quadro
+
+    return itens
+
+def generate_fre_url(numero_documento, codigo_quadro):
+    return (
+        "https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx"
+        f"?NumeroSequencialDocumento={numero_documento}"
+        f"&CodigoGrupo=8000"
+        f"&CodigoQuadro={codigo_quadro}"
+    )
+
+# =========================
+# EXECUÇÃO PRINCIPAL
+# =========================
+
 df, df_planos = load_data()
 df = df.sort_values(by=["DENOM_CIA", "VERSAO"], ascending=[True, False])
 
-# Criar conjunto de empresas únicas
-empresas_csv = set(df["DENOM_CIA"].dropna())
-empresas_excel = set(df_planos["Empresa"].dropna())
-empresas_unicas = sorted(empresas_csv | empresas_excel)
+empresas = sorted(
+    set(df["DENOM_CIA"].dropna()) | set(df_planos["Empresa"].dropna())
+)
 
-# Mapeamento dos itens FRE para CódigoQuadro
-FRE_ITEMS = {
-    "8.1": "8030",
-    "8.2": "8421",
-    "8.4": "8120",
-    "8.5": "8437",
-    "8.6": "8438",
-    "8.7": "8150",
-    "8.8": "8160",
-    "8.9": "8170",
-    "8.10": "8180",
-    "8.11": "8190",
-    "8.12": "8200",
-}
+if not empresas:
+    st.warning("Nenhuma empresa encontrada.")
+    st.stop()
 
-if empresas_unicas:
-    selected_company = st.selectbox("🏢 Selecione a empresa", empresas_unicas)
-    df_filtered = df[df["DENOM_CIA"] == selected_company]
+empresa = st.selectbox("🏢 Selecione a empresa", empresas)
+df_empresa = df[df["DENOM_CIA"] == empresa]
 
-    selected_item = st.radio(
-        "📑 Selecione o item",
-        list(FRE_ITEMS.keys())
+if df_empresa.empty:
+    st.warning("Empresa sem FRE disponível.")
+    st.stop()
+
+link_doc = df_empresa.iloc[0]["LINK_DOC"]
+numero_doc = extract_document_number(link_doc)
+
+if not numero_doc:
+    st.warning("Não foi possível extrair o número do documento.")
+    st.stop()
+
+with st.spinner("Consultando itens reais do FRE na CVM..."):
+    itens_fre = get_fre_items(numero_doc)
+
+if not itens_fre:
+    st.warning("Nenhum item do capítulo 8 encontrado.")
+    st.stop()
+
+item_selecionado = st.selectbox(
+    "📑 Selecione o item FRE (capítulo 8)",
+    sorted(itens_fre.keys(), key=lambda x: float(x.replace(".", "")))
+)
+
+codigo_quadro = itens_fre[item_selecionado]
+fre_url = generate_fre_url(numero_doc, codigo_quadro)
+
+st.success(f"Item {item_selecionado} encontrado no FRE")
+st.write(f"[🔗 Abrir documento FRE – Item {item_selecionado}]({fre_url})")
+
+# =========================
+# PLANOS DE REMUNERAÇÃO
+# =========================
+
+planos_empresa = df_planos[df_planos["Empresa"] == empresa]
+
+if not planos_empresa.empty:
+    st.write("---")
+    st.subheader("📋 Planos de Remuneração")
+
+    planos_empresa = planos_empresa.copy()
+    planos_empresa["Link"] = planos_empresa["Link"].apply(
+        lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
     )
 
-    document_url = df_filtered.iloc[0]["LINK_DOC"] if not df_filtered.empty else None
-
-    def extract_document_number(url):
-        """Extrai o número sequencial do documento da URL"""
-        if pd.isna(url):
-            return None
-        parsed_url = urlparse(url)
-        query_params = parse_qs(parsed_url.query)
-        return query_params.get("NumeroSequencialDocumento", [None])[0]
-
-    def generate_fre_url(doc_number, item):
-        """Gera a URL do documento FRE"""
-        codigo_quadro = FRE_ITEMS.get(item)
-        if not codigo_quadro:
-            return None
-        return (
-            "https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx"
-            f"?NumeroSequencialDocumento={doc_number}"
-            f"&CodigoGrupo=8000"
-            f"&CodigoQuadro={codigo_quadro}"
-        )
-
-    if document_url:
-        document_number = extract_document_number(document_url)
-        if document_number:
-            fre_url = generate_fre_url(document_number, selected_item)
-            if fre_url:
-                st.write(f"### 📄 Documento FRE da {selected_company} - Item {selected_item}")
-                st.write(f"[🔗 Abrir documento em uma nova aba]({fre_url})")
-            else:
-                st.warning("⚠️ Item FRE inválido.")
-        else:
-            st.warning("⚠️ Documento não encontrado para esta empresa.")
-
-    # Verificar se a empresa possui planos de remuneração
-    planos_empresa = df_planos[df_planos["Empresa"] == selected_company]
-    if not planos_empresa.empty:
-        st.write("---")
-        st.write("📋 **Planos de Remuneração encontrados:**")
-
-        planos_empresa = planos_empresa.copy()
-        planos_empresa["Link"] = planos_empresa["Link"].apply(
-            lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
-        )
-
-        st.write(planos_empresa.to_html(escape=False, index=False), unsafe_allow_html=True)
-    else:
-        st.write("❌ Nenhum plano de remuneração encontrado para esta empresa.")
+    st.write(planos_empresa.to_html(escape=False, index=False), unsafe_allow_html=True)
+else:
+    st.info("Nenhum plano de remuneração encontrado para esta empresa.")
