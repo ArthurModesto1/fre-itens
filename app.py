@@ -1,15 +1,40 @@
 import streamlit as st
-import requests
 import pandas as pd
 import re
-from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
 st.set_page_config(layout="wide")
 st.title("📄 Visualizador de Documentos FRE – CVM")
 
+# =========================
+# FONTES DE DADOS
+# =========================
+
 CSV_URL = "https://github.com/tovarich86/FRE-8.1/raw/main/fre_cia_aberta_2025.csv"
 PLANOS_URL = "https://github.com/tovarich86/FRE-8.1/raw/main/tabela_consolidada_cvm_otimizado.xlsx"
+
+# =========================
+# CÓDIGOS OFICIAIS FRE 2025
+# =========================
+
+FRE_ITEMS = {
+    "8.1": "8030",
+    "8.2": "8040",
+    "8.3": "8050",
+    "8.4": "8120",
+    "8.5": "8060",
+    "8.6": "8070",
+    "8.7": "8080",
+    "8.8": "8090",
+    "8.9": "8100",
+    "8.10": "8110",
+    "8.11": "8210",
+    "8.12": "8220",
+}
+
+# =========================
+# FUNÇÕES
+# =========================
 
 @st.cache_data
 def load_data():
@@ -20,15 +45,14 @@ def load_data():
         if pd.isna(name):
             return None
         name = name.upper().strip()
-        name = re.sub(r"\s+(S\.?A\.?|S/A|SA)$", " S.A.", name)
-        return name
+        return re.sub(r"\s+(S\.?A\.?|S/A|SA)$", " S.A.", name)
 
     df_fre["DENOM_CIA"] = df_fre["DENOM_CIA"].apply(normalize_company_name)
     df_planos["Empresa"] = df_planos["Empresa"].apply(normalize_company_name)
 
     return df_fre, df_planos
 
-@st.cache_data
+
 def extract_document_number(url):
     if pd.isna(url):
         return None
@@ -36,41 +60,12 @@ def extract_document_number(url):
     params = parse_qs(parsed.query)
     return params.get("NumeroSequencialDocumento", [None])[0]
 
-@st.cache_data
-def get_fre_items(numero_documento):
-    """
-    Busca no índice do FRE quais itens existem
-    e seus respectivos CodigoQuadro reais
-    """
-    url = (
-        "https://www.rad.cvm.gov.br/ENET/frmConsultaFRE.aspx"
-        f"?NumeroSequencialDocumento={numero_documento}"
-    )
 
-    response = requests.get(url, timeout=15)
-    soup = BeautifulSoup(response.text, "html.parser")
+def generate_fre_url(numero_documento, item):
+    codigo_quadro = FRE_ITEMS.get(item)
+    if not codigo_quadro:
+        return None
 
-    itens = {}
-
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-
-        if "frmExibirArquivoFRE.aspx" in href:
-            parsed = urlparse(href)
-            params = parse_qs(parsed.query)
-
-            codigo_quadro = params.get("CodigoQuadro", [None])[0]
-            texto = a.get_text(strip=True)
-
-            # Captura apenas itens do capítulo 8
-            match = re.match(r"(8\.\d+)", texto)
-            if match and codigo_quadro:
-                item = match.group(1)
-                itens[item] = codigo_quadro
-
-    return itens
-
-def generate_fre_url(numero_documento, codigo_quadro):
     return (
         "https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx"
         f"?NumeroSequencialDocumento={numero_documento}"
@@ -107,23 +102,16 @@ if not numero_doc:
     st.warning("Não foi possível extrair o número do documento.")
     st.stop()
 
-with st.spinner("Consultando itens reais do FRE na CVM..."):
-    itens_fre = get_fre_items(numero_doc)
-
-if not itens_fre:
-    st.warning("Nenhum item do capítulo 8 encontrado.")
-    st.stop()
-
-item_selecionado = st.selectbox(
-    "📑 Selecione o item FRE (capítulo 8)",
-    sorted(itens_fre.keys(), key=lambda x: float(x.replace(".", "")))
+item = st.radio(
+    "📑 Selecione o item do FRE (Capítulo 8)",
+    list(FRE_ITEMS.keys()),
+    horizontal=True
 )
 
-codigo_quadro = itens_fre[item_selecionado]
-fre_url = generate_fre_url(numero_doc, codigo_quadro)
+fre_url = generate_fre_url(numero_doc, item)
 
-st.success(f"Item {item_selecionado} encontrado no FRE")
-st.write(f"[🔗 Abrir documento FRE – Item {item_selecionado}]({fre_url})")
+st.success(f"Documento FRE – Item {item}")
+st.write(f"[🔗 Abrir documento em nova aba]({fre_url})")
 
 # =========================
 # PLANOS DE REMUNERAÇÃO
