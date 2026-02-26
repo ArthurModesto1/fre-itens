@@ -11,3 +11,6 @@ showWidgetBorder = true
 baseRadius = "0.3rem"
 buttonRadius = "full"
 chartCategoricalColors = ["#ffc862", "#2d46b9", "#b49bc8"]
+font = "nunito-sans"
+headingFont = "nunito-sans"
+codeFont = "monospace"
