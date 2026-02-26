@@ -6,10 +6,7 @@ import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
-st.title("📄 Visualizador de Documentos FRE - CVM")
-st.set_page_config(
-    layout="wide",
-)
+st.title("📄 **Visualizador de Documentos FRE - CVM**")
 
 # URLs dos arquivos CSV e Excel (versões otimizadas no GitHub)
 CSV_URL = "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_2025.csv"
