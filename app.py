@@ -14,6 +14,7 @@ PLANOS_URL = "https://github.com/ArthurModesto1/fre-itens/raw/main/tabela_consol
 
 # Dicionário com as URLs dos arquivos específicos para download
 DOWNLOAD_FILES = {
+    "8.2": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_remuneracao_total_orgao_2025.csv",
     "8.3": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_remuneracao_variavel_2025.csv",
     "8.5": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_remuneracao_acao_2025.csv",
     "8.11": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_acao_entregue_2025.csv"
@@ -51,10 +52,10 @@ if empresas_unicas:
     selected_company = st.selectbox("🏢 Selecione a empresa", empresas_unicas)
     df_filtered = df[df["DENOM_CIA"] == selected_company]
 
-    lista_itens = ["8.1", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12"]
+    lista_itens = ["8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12"]
     selected_item = st.radio("📑 Selecione o item", lista_itens, horizontal=True)
 
-    # --- LÓGICA DE DOWNLOAD FILTRADO (8.3, 8.5, 8.11) ---
+    # --- LÓGICA DE DOWNLOAD FILTRADO (8.2, 8.3, 8.5, 8.11) ---
     if selected_item in DOWNLOAD_FILES:
         st.info(f"📥 O item {selected_item} permite o download dos dados brutos filtrados.")
         
@@ -101,7 +102,6 @@ if empresas_unicas:
             """Gera a URL do documento FRE com mapeamento de quadros"""
             mapeamento_quadros = {
                 "8.1": "8030",
-                "8.2": "8060",
                 "8.4": "8120",
                 "8.6": "8180",
                 "8.7": "8210",
