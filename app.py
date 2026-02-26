@@ -86,7 +86,6 @@ if empresas_unicas:
         except Exception as e:
             st.error(f"Erro ao processar arquivo de download: {e}")
     
-    # --- ALTERAÇÃO AQUI: ADICIONADO ELSE PARA ESCONDER QUANDO FOR ITEM DE DOWNLOAD ---
     else:
         document_url = df_filtered.iloc[0]["LINK_DOC"] if not df_filtered.empty else None
         
