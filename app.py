@@ -63,7 +63,7 @@ if empresas_unicas:
             df_download = pd.read_csv(DOWNLOAD_FILES[selected_item], sep=';', encoding="latin-1", dtype=str)
             
             # Filtra pela empresa
-            col_name = "Nome_Companhia" if "Nome_Companhia" in df_download.columns
+            col_name = "Nome_Companhia"
             
             # Normaliza para garantir o match
             df_download[col_name] = df_download[col_name].str.upper().str.strip()
