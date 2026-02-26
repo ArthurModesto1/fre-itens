@@ -12,6 +12,13 @@ st.title("📄 Visualizador de Documentos FRE - CVM")
 CSV_URL = "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_2025.csv"
 PLANOS_URL = "https://github.com/ArthurModesto1/fre-itens/raw/main/tabela_consolidada_cvm_otimizado.xlsx"
 
+# Dicionário com as URLs dos arquivos específicos para download
+DOWNLOAD_FILES = {
+    "8.3": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_remuneracao_variavel_2025.csv",
+    "8.5": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_remuneracao_acao_2025.csv",
+    "8.11": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_acao_entregue_2025.csv"
+}
+
 @st.cache_data
 def load_data():
     """Carrega os dados otimizados do CSV e do Excel"""
@@ -44,8 +51,40 @@ if empresas_unicas:
     selected_company = st.selectbox("🏢 Selecione a empresa", empresas_unicas)
     df_filtered = df[df["DENOM_CIA"] == selected_company]
 
-    lista_itens = ["8.1", "8.2", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12"]
+    lista_itens = ["8.1", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12"]
     selected_item = st.radio("📑 Selecione o item", lista_itens, horizontal=True)
+
+    # --- LÓGICA DE DOWNLOAD FILTRADO (8.3, 8.5, 8.11) ---
+    if selected_item in DOWNLOAD_FILES:
+        st.info(f"📥 O item {selected_item} permite o download dos dados brutos filtrados.")
+        
+        try:
+            # Carrega o CSV específico do item
+            df_download = pd.read_csv(DOWNLOAD_FILES[selected_item], sep=';', encoding="latin-1", dtype=str)
+            
+            # Filtra pela empresa
+            col_name = "Nome_Companhia" if "Nome_Companhia" in df_download.columns
+            
+            # Normaliza para garantir o match
+            df_download[col_name] = df_download[col_name].str.upper().str.strip()
+            df_filtered_dl = df_download[df_download[col_name].str.contains(selected_company, na=False)]
+
+            if not df_filtered_dl.empty:
+                csv_bytes = df_filtered_dl.to_csv(index=False, sep=';', encoding="latin-1").encode("latin-1")
+                
+                st.download_button(
+                    label=f"💾 Baixar Dados {selected_item} - {selected_company}",
+                    data=csv_bytes,
+                    file_name=f"item_{selected_item}_{selected_company.replace(' ', '_')}.csv",
+                    mime="text/csv",
+                )
+                st.write(f"Prévia dos dados ({len(df_filtered_dl)} registros):")
+                st.dataframe(df_filtered_dl.head(5))
+            else:
+                st.warning(f"Nenhum dado encontrado para {selected_company} no arquivo do item {selected_item}.")
+        
+        except Exception as e:
+            st.error(f"Erro ao processar arquivo de download: {e}")
     
     document_url = df_filtered.iloc[0]["LINK_DOC"] if not df_filtered.empty else None
     
@@ -63,13 +102,11 @@ if empresas_unicas:
             "8.1": "8030",
             "8.2": "8060",
             "8.4": "8120",
-            "8.5": "8150",
             "8.6": "8180",
             "8.7": "8210",
             "8.8": "8240",
             "8.9": "8270",
             "8.10": "8300",
-            "8.11": "8330",
             "8.12": "8360"
         }
         codigo_quadro = mapeamento_quadros.get(item, "8030")
