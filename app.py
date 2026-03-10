@@ -16,8 +16,11 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    label[data-baseweb="radio"] {
+    div[data-role="radio"] > div {
         background-color: white !important;
+        border-radius: 50%;
+    }
+
     }
 
 </style>
