@@ -16,9 +16,13 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-input[type="radio"]:unchecked + div {
-    background-color: white !important;
-}
+    input[type="radio"] + label {
+        background-color: #ffffff;
+    }
+    
+    input[type="radio"]:checked + label {
+        background-color: #307ae0;
+    }
 
 </style>
 """, unsafe_allow_html=True)
