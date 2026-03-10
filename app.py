@@ -14,7 +14,7 @@ st.set_page_config(
 
 # ---------------- HEADER ---------------- #
 st.markdown("""
-# 📄 Visualizador de Documentos FRE - CVM
+#📄 Visualizador de Documentos FRE - CVM
 Ferramenta para consulta rápida de documentos FRE de companhias abertas.
 """)
 st.markdown("---")
@@ -89,12 +89,6 @@ col1, col2 = st.columns([3,1])
 with col1:
    st.write(f"Item selecionado: **{selected_item}**")
 
-with col2:
-   st.metric(
-       label="Registros encontrados",
-       value=len(df_filtered)
-   )
-
 st.markdown("---")
 
 # --- LÓGICA DE DOWNLOAD FILTRADO (8.2, 8.3, 8.5, 8.11) ---
@@ -124,8 +118,6 @@ if selected_item in DOWNLOAD_FILES:
                    mime="text/csv"
                )
 
-           with col2:
-               st.success(f"{len(df_filtered_dl)} registros encontrados")
            st.markdown("### 📊 Prévia dos dados")
            st.dataframe(df_filtered_dl.head(5), use_container_width=True)
 
@@ -178,21 +170,17 @@ else:
 planos_empresa = df_planos[df_planos["Empresa"] == selected_company]
 st.markdown("---")
 st.subheader("📋 Planos de Remuneração")
+
 if not planos_empresa.empty:
-   planos_empresa["Link"] = planos_empresa["Link"].apply(
-       lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
-   )
-   st.write(
-       planos_empresa.to_html(
-           escape=False,
-           index=False
-       ),
-       unsafe_allow_html=True
-   )
+    # Transformar o link em hyperlink
+   planos_empresa["Link"] = planos_empresa["Link"].apply(lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>')
+
+   st.write(planos_empresa.to_html(escape=False,index=False),unsafe_allow_html=True)
+
 else:
    st.info("Nenhum plano encontrado para esta empresa.")
-  
-   
+
+
 # ---------------- FOOTER ---------------- #
 st.markdown("---")
 st.caption(
