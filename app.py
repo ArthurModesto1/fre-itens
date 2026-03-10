@@ -21,11 +21,11 @@ st.logo(link_logo, icon_image=link_logo_curta)
 st.markdown("""
 <style>
     /* Customização do Radio Button */
-    label[data-baseweb="radio"] > div {
+    div[data-baseweb="radio"] > div {
         background-color: #05132a !important;
     }
 
-    label[data-baseweb="radio"] div > div{
+    div[data-baseweb="radio"] div > div{
         background-color: white !important;
     }
 
