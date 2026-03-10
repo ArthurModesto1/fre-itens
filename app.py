@@ -150,13 +150,9 @@ if selected_item in DOWNLOAD_FILES:
                )
 
             st.markdown("### 📊 Prévia dos dados")
-
-            html_previa = df_filtered_dl.head(5).to_html(
-                index=False, 
-                classes='minha-tabela', 
-                escape=False
-            )
-
+            
+            html_previa = df_filtered_dl.head(5).to_html(index=False, classes='minha-tabela', escape=False)
+            
             st.write(html_previa, unsafe_allow_html=True)
 
        else:
