@@ -31,14 +31,17 @@ st.markdown("""
 
     .minha-tabela {
         width: 100%;
+        border-collapse: separate;
         border-radius: 1rem;
         font-size: 0.9rem;
-        background-color: #0b2859; /* Fundo escuro padrão */
+        background-color: #0b2859; 
+        overflow: hidden;
     }
     .minha-tabela th {
-        background-color: #10408d; /* Cor do cabeçalho */
+        background-color: #10408d; 
         text-align: center !important;
         padding: 10px;
+        border: none
     }
     .minha-tabela td {
         padding: 8px;
