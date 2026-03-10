@@ -33,7 +33,6 @@ st.markdown("""
     .minha-tabela-container {
         max-height: 400px;
         overflow-y: auto;
-        overflow-x: hidden;
         border-radius: 1rem;
         border: 1px solid #10408d;
     }
@@ -49,22 +48,15 @@ st.markdown("""
         background-color: #10408d;
         text-align: center;
         padding: 8px;
-        color: white;
     }
     .minha-tabela td {
         padding: 6px;
         text-align: center;
-        color: white;
         border-top: 1px solid #10408d;
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
-    .minha-tabela a {
-        color: #4fb3ff !important;
-        text-decoration: none;
-        font-weight: bold;
     }
 </style>
 """, unsafe_allow_html=True)
