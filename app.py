@@ -32,7 +32,7 @@ st.markdown("""
     .minha-tabela {
         width: 100%;
         border-collapse: collapse;
-        font-family: nunito-sans;
+        border-radius: 0.9rem;
         font-size: 0.9rem;
         background-color: #0e1117; /* Fundo escuro padrão */
     }
