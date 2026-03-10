@@ -117,7 +117,8 @@ if selected_item in DOWNLOAD_FILES:
                )
 
            st.markdown("### 📊 Prévia dos dados")
-           st.dataframe(df_filtered_dl.head(5), use_container_width=True)
+           config = {col: st.column_config.Column(alignment="center") for col in df_filtered_dl.columns}
+           st.dataframe(df_filtered_dl.head(5), column_config=config, use_container_width=True)
 
        else:
            st.warning("Nenhum dado encontrado.")
