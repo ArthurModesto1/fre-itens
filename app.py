@@ -16,7 +16,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    div[role="radiogroup"] > label[data-baseweb="radio"] {
+    label[data-baseweb="radio"] {
         background-color: white !important;
     }
 
