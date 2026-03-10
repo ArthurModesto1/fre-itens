@@ -16,9 +16,17 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    [data-testid="stWidgetLabel"] + div div[role="radiogroup"] > label > div:first-child {
+    div[data-testid="stRadio"] > div[role="radiogroup"] > label {
+        background-color: transparent !important;
+    }
+
+    div[data-testid="stRadio"] div[role="radiogroup"] label div[data-baseweb="radio"] > div:first-child {
         background-color: white !important;
-        border-radius: 50%;
+        border: 1px solid white !important;
+    }
+
+    div[data-testid="stRadio"] div[role="radiogroup"] label p {
+        color: white !important;
     }
 
 </style>
