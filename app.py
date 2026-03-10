@@ -12,6 +12,30 @@ st.set_page_config(
    layout="wide"
 )
 
+# -------- CSS PARA CUSTOMIZAR RADIO -------- #
+st.markdown("""
+<style>
+
+/* círculo não selecionado */
+div[role="radiogroup"] label div:first-child {
+    background-color: white !important;
+    border: 2px solid white !important;
+}
+
+/* círculo selecionado */
+div[role="radiogroup"] input:checked + div {
+    background-color: #1ed760 !important;
+    border-color: #1ed760 !important;
+}
+
+/* tamanho da fonte dos itens */
+div[role="radiogroup"] label {
+    font-size: 16px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 # ---------------- HEADER ---------------- #
 st.markdown("""
 # 📄 Visualizador de Documentos FRE - CVM
@@ -31,19 +55,16 @@ DOWNLOAD_FILES = {
    "8.11": "https://github.com/ArthurModesto1/fre-itens/raw/main/fre_cia_aberta_acao_entregue_2025.csv"
 }
 
-
 # ---------------- LOAD DATA ---------------- #
 @st.cache_data
 def load_data():
    df_fre = pd.read_csv(CSV_URL, sep=';', dtype=str, encoding="latin-1")
    df_planos = pd.read_excel(PLANOS_URL, dtype=str)
 
-   # Função para padronizar nomes de empresas
    def normalize_company_name(name):
        if pd.isna(name):
            return None
        name = name.upper().strip()
-       # Padronizar todas as variações de S.A., S.A, S/A, SA para "S.A."
        name = re.sub(r"\s+(S\.?A\.?|S/A|SA)$", " S.A.", name)
        return name
 
@@ -61,7 +82,6 @@ empresas_csv = set(df["DENOM_CIA"].dropna())
 empresas_excel = set(df_planos["Empresa"].dropna())
 empresas_unicas = sorted(empresas_csv | empresas_excel)
 
-
 # ---------------- SIDEBAR (FILTROS) ---------------- #
 with st.sidebar:
    st.header("🔎 Filtros")
@@ -78,7 +98,6 @@ with st.sidebar:
        lista_itens
    )
 
-
 # ---------------- RESULTADOS ---------------- #
 df_filtered = df[df["DENOM_CIA"] == selected_company]
 
@@ -89,23 +108,21 @@ col1, col2 = st.columns([3,1])
 with col1:
    st.write(f"Item selecionado: **{selected_item}**")
 
-# --- LÓGICA DE DOWNLOAD FILTRADO (8.2, 8.3, 8.5, 8.11) ---
+# --- LÓGICA DE DOWNLOAD FILTRADO ---
 if selected_item in DOWNLOAD_FILES:
    st.info(f"📥 O item {selected_item} permite o download dos dados filtrados.")
 
    try:
-       # Carrega o CSV específico do item
        df_download = pd.read_csv(DOWNLOAD_FILES[selected_item], sep=';', encoding="latin-1", dtype=str)
 
-       # Filtra pela empresa
        col_name = "Nome_Companhia"
 
-       # Normaliza para garantir o match
        df_download[col_name] = df_download[col_name].str.upper().str.strip()
        df_filtered_dl = df_download[df_download[col_name].str.contains(selected_company, na=False)]
 
        if not df_filtered_dl.empty:
            csv_bytes = df_filtered_dl.to_csv(index=False, sep=';', encoding="latin-1").encode("latin-1")
+
            col1, col2 = st.columns([1,3])
 
            with col1:
@@ -119,8 +136,9 @@ if selected_item in DOWNLOAD_FILES:
            st.markdown("### 📊 Prévia dos dados")
 
            preview_df = df_filtered_dl.head(5)
+
            st.dataframe(
-                preview_df.style.set_properties(**{'text-align': 'center'}), 
+                preview_df.style.set_properties(**{'text-align': 'center'}),
                 use_container_width=True
             )
 
@@ -129,7 +147,6 @@ if selected_item in DOWNLOAD_FILES:
 
    except Exception as e:
        st.error(f"Erro ao processar download: {e}")
-
 
 # ---------------- DOCUMENT VIEW ---------------- #
 else:
@@ -153,39 +170,54 @@ else:
            "8.10":"8300",
            "8.12":"8360"
        }
+
        codigo_quadro = mapeamento_quadros.get(item,"8030")
+
        return f"https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx?NumeroSequencialDocumento={doc_number}&CodigoGrupo=8000&CodigoQuadro={codigo_quadro}"
 
    if document_url:
        document_number = extract_document_number(document_url)
+
        if document_number:
            fre_url = generate_fre_url(document_number, selected_item)
+
            st.markdown("### 📄 Documento FRE")
+
            st.link_button(
                "🔗 Abrir documento na CVM",
                fre_url
            )
+
        else:
            st.warning("Documento não encontrado.")
 
-
- # Verificar se a empresa possui planos e exibir ao final
+# ---------------- PLANOS ---------------- #
 planos_empresa = df_planos[df_planos["Empresa"] == selected_company]
+
 st.markdown("---")
 st.subheader("📋 Planos de Remuneração")
 
 if not planos_empresa.empty:
-    # Transformar o link em hyperlink
-   planos_empresa["Link"] = planos_empresa["Link"].apply(lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>')
 
-   st.write(planos_empresa.to_html(escape=False,index=False, justify="center"),unsafe_allow_html=True)
+   planos_empresa["Link"] = planos_empresa["Link"].apply(
+       lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
+   )
+
+   st.write(
+       planos_empresa.to_html(
+           escape=False,
+           index=False,
+           justify="center"
+       ),
+       unsafe_allow_html=True
+   )
 
 else:
    st.info("Nenhum plano encontrado para esta empresa.")
 
-
 # ---------------- FOOTER ---------------- #
 st.markdown("---")
+
 st.caption(
 """
 Sistema de consulta de documentos FRE da CVM  
