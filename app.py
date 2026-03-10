@@ -32,7 +32,6 @@ st.markdown("""
     /* Estilização das Tabelas HTML */
     .minha-tabela {
         width: 100%;
-        table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
         border-radius: 1rem;
