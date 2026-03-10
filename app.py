@@ -16,17 +16,8 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    div[data-testid="stRadio"] > div[role="radiogroup"] > label {
-        background-color: transparent !important;
-    }
-
-    div[data-testid="stRadio"] div[role="radiogroup"] label div[data-baseweb="radio"] > div:first-child {
+    div[class="st-bg st-dp st-d7 st-d8 st-d9 st-da st-c0 st-as st-db st-dc st-dd st-c4 st-de st-bo st-c1 st-df st-dg st-cp st-b4 st-b5"] {
         background-color: white !important;
-        border: 1px solid white !important;
-    }
-
-    div[data-testid="stRadio"] div[role="radiogroup"] label p {
-        color: white !important;
     }
 
 </style>
