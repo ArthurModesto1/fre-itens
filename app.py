@@ -20,6 +20,10 @@ st.markdown("""
         background-color: white !important;
     }
 
+    div[class="st-dq st-d7 st-d8 st-d9 st-da st-dr st-b4 st-b5 st-ds"]{
+        background-color: white !important;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
