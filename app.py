@@ -89,8 +89,6 @@ col1, col2 = st.columns([3,1])
 with col1:
    st.write(f"Item selecionado: **{selected_item}**")
 
-st.markdown("---")
-
 # --- LÓGICA DE DOWNLOAD FILTRADO (8.2, 8.3, 8.5, 8.11) ---
 if selected_item in DOWNLOAD_FILES:
    st.info(f"📥 O item {selected_item} permite o download dos dados filtrados.")
@@ -175,7 +173,7 @@ if not planos_empresa.empty:
     # Transformar o link em hyperlink
    planos_empresa["Link"] = planos_empresa["Link"].apply(lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>')
 
-   st.write(planos_empresa.to_html(escape=False,index=False),unsafe_allow_html=True)
+   st.write(planos_empresa.to_html(escape=False,index=False, justify="center"),unsafe_allow_html=True)
 
 else:
    st.info("Nenhum plano encontrado para esta empresa.")
