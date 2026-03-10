@@ -157,8 +157,8 @@ if selected_item in DOWNLOAD_FILES:
                 escape=False
             )
 
-# 2. Exibindo na tela
-st.write(html_previa, unsafe_allow_html=True)
+            st.write(html_previa, unsafe_allow_html=True)
+            
        else:
            st.warning("Nenhum dado encontrado.")
 
