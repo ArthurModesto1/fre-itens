@@ -53,6 +53,11 @@ st.markdown("""
         text-align: center;
         color: white;
         border-top: 1px solid #10408d;
+
+        white-space: normal;
+        word-wrap: break-word;
+        max-width: 400px;
+        vertical-align: middle;
     }
     .minha-tabela tr:first-child td {
         border-top: none;
