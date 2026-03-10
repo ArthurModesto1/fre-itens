@@ -32,6 +32,7 @@ st.markdown("""
     /* Estilização das Tabelas HTML */
     .minha-tabela {
         width: 100%;
+        table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
         border-radius: 1rem;
@@ -54,8 +55,8 @@ st.markdown("""
         color: white;
         border-top: 1px solid #10408d;
 
-        white-space: normal;
-        word-wrap: break-word;
+        white-space: normal !important;
+        word-wrap: break-word !important;
         max-width: 400px;
         vertical-align: middle;
     }
