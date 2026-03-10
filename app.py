@@ -31,7 +31,7 @@ st.markdown("""
 
     .minha-tabela {
         width: 100%;
-        border-radius: 50px;
+        border-radius: 1rem;
         font-size: 0.9rem;
         background-color: #0b2859; /* Fundo escuro padrão */
     }
@@ -39,7 +39,6 @@ st.markdown("""
         background-color: #10408d; /* Cor do cabeçalho */
         text-align: center !important;
         padding: 10px;
-        border-bottom: 2px solid #31333f;
     }
     .minha-tabela td {
         padding: 8px;
