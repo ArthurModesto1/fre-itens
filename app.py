@@ -17,38 +17,51 @@ st.set_page_config(
 
 st.logo(link_logo, icon_image=link_logo_curta)
 
-# -------- CSS PARA CUSTOMIZAR RADIO -------- #
+# -------- CSS PARA CUSTOMIZAR RADIO E TABELAS -------- #
 st.markdown("""
 <style>
-
-    div[class="st-bg st-dp st-d7 st-d8 st-d9 st-da st-c0 st-as st-db st-dc st-dd st-c4 st-de st-bo st-c1 st-df st-dg st-cp st-b4 st-b5"] {
-        background-color: #05132a !important;
+    /* Customização do Radio Button */
+    [data-testid="stRadio"] [role="radiogroup"] label {
+        background-color: transparent !important;
     }
-
-    div[class="st-dq st-d7 st-d8 st-d9 st-da st-dr st-b4 st-b5 st-ds"]{
+    [data-testid="stRadio"] div[data-baseweb="radio"] > div:first-child {
         background-color: white !important;
+        border: 1px solid white !important;
     }
 
+    /* Estilização das Tabelas HTML */
     .minha-tabela {
         width: 100%;
         border-collapse: separate;
+        border-spacing: 0;
         border-radius: 1rem;
         font-size: 0.9rem;
         background-color: #0b2859; 
         overflow: hidden;
+        border: 1px solid #10408d;
+        margin-bottom: 20px;
     }
     .minha-tabela th {
         background-color: #10408d; 
         text-align: center !important;
         padding: 10px;
-        border: none
+        color: white;
+        border: none;
     }
     .minha-tabela td {
         padding: 8px;
         text-align: center;
-        border-top: 1px solid #0b2859;
+        color: white;
+        border-top: 1px solid #10408d;
     }
-
+    .minha-tabela tr:first-child td {
+        border-top: none;
+    }
+    .minha-tabela a {
+        color: #4fb3ff !important;
+        text-decoration: none;
+        font-weight: bold;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -130,18 +143,16 @@ if selected_item in DOWNLOAD_FILES:
 
    try:
        df_download = pd.read_csv(DOWNLOAD_FILES[selected_item], sep=';', encoding="latin-1", dtype=str)
-
        col_name = "Nome_Companhia"
-
        df_download[col_name] = df_download[col_name].str.upper().str.strip()
        df_filtered_dl = df_download[df_download[col_name].str.contains(selected_company, na=False)]
 
        if not df_filtered_dl.empty:
            csv_bytes = df_filtered_dl.to_csv(index=False, sep=';', encoding="latin-1").encode("latin-1")
 
-           col1, col2 = st.columns([1,3])
+           col1_dl, col2_dl = st.columns([1,3])
 
-           with col1:
+           with col1_dl:
                st.download_button(
                    label="💾 Baixar CSV",
                    data=csv_bytes,
@@ -149,11 +160,11 @@ if selected_item in DOWNLOAD_FILES:
                    mime="text/csv"
                )
 
-            st.markdown("### 📊 Prévia dos dados")
-            
-            html_previa = df_filtered_dl.head(5).to_html(index=False, classes='minha-tabela', escape=False)
-            
-            st.write(html_previa, unsafe_allow_html=True)
+           st.markdown("### 📊 Prévia dos dados")
+           
+           html_previa = df_filtered_dl.head(5).to_html(index=False, classes='minha-tabela', escape=False)
+           
+           st.write(html_previa, unsafe_allow_html=True)
 
        else:
            st.warning("Nenhum dado encontrado.")
@@ -183,24 +194,18 @@ else:
            "8.10":"8300",
            "8.12":"8360"
        }
-
        codigo_quadro = mapeamento_quadros.get(item,"8030")
-
        return f"https://www.rad.cvm.gov.br/ENET/frmExibirArquivoFRE.aspx?NumeroSequencialDocumento={doc_number}&CodigoGrupo=8000&CodigoQuadro={codigo_quadro}"
 
    if document_url:
        document_number = extract_document_number(document_url)
-
        if document_number:
            fre_url = generate_fre_url(document_number, selected_item)
-
            st.markdown("### 📄 Documento FRE")
-
            st.link_button(
                "🔗 Abrir documento na CVM",
                fre_url
            )
-
        else:
            st.warning("Documento não encontrado.")
 
@@ -211,7 +216,6 @@ st.markdown("---")
 st.subheader("📋 Planos de Remuneração")
 
 if not planos_empresa.empty:
-
    planos_empresa["Link"] = planos_empresa["Link"].apply(
        lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
    )
@@ -225,13 +229,11 @@ if not planos_empresa.empty:
        ),
        unsafe_allow_html=True
    )
-
 else:
    st.info("Nenhum plano encontrado para esta empresa.")
 
 # ---------------- FOOTER ---------------- #
 st.markdown("---")
-
 st.caption(
 """
 Sistema de consulta de documentos FRE da CVM  
