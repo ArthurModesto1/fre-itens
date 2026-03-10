@@ -30,10 +30,8 @@ st.markdown("""
     }
 
     /* Estilização das Tabelas HTML */
-    
     .minha-tabela {
         width: 100%;
-        table-layout: fixed;
         border-collapse: separate;
         border-spacing: 0;
         border-radius: 1rem;
@@ -55,10 +53,9 @@ st.markdown("""
         text-align: center;
         color: white;
         border-top: 1px solid #10408d;
+
         white-space: normal !important;
         word-wrap: break-word !important;
-        overflow-wrap: anywhere;   /* <-- adiciona */
-        hyphens: auto;             /* <-- opcional */
         max-width: 400px;
         vertical-align: middle;
     }
@@ -70,17 +67,6 @@ st.markdown("""
         text-decoration: none;
         font-weight: bold;
     }
-    /* última coluna com limite de largura */
-    .minha-tabela td:last-child, 
-    .minha-tabela th:last-child {
-        max-width: 360px;
-    }
-    /* contêiner com scroll horizontal se precisar */
-    .tabela-wrap {
-        overflow-x: auto;
-        width: 100%;
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
