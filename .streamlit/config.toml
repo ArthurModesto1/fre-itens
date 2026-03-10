@@ -1,16 +1,23 @@
 [theme]
 base = "dark"
-primaryColor = "#1ed760"
-backgroundColor = "#2a2a2a"
-secondaryBackgroundColor = "#121212"
-codeBackgroundColor = "#121212"
-textColor = "#ffffff"
-linkColor = "#1ed760"
-borderColor = "#7c7c7c"
+primaryColor = "#3b82f6"
+backgroundColor = "#0f172a"
+secondaryBackgroundColor = "#1e293b"
+textColor = "#e5e7eb"
+linkColor = "#3b82f6"
+borderColor = "#334155"
+codeBackgroundColor = "#020617"
 showWidgetBorder = true
-baseRadius = "0.3rem"
-buttonRadius = "full"
-chartCategoricalColors = ["#ffc862", "#2d46b9", "#b49bc8"]
-font = "nunito-sans"
-headingFont = "nunito-sans"
+baseRadius = "0.5rem"
+buttonRadius = "0.5rem"
+font = "sans serif"
+headingFont = "sans serif"
 codeFont = "monospace"
+chartCategoricalColors = [
+"#3b82f6",
+"#22c55e",
+"#f59e0b",
+"#ef4444",
+"#a855f7",
+"#14b8a6"
+]
