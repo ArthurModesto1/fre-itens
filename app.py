@@ -31,10 +31,9 @@ st.markdown("""
 
     .minha-tabela {
         width: 100%;
-        border-collapse: collapse;
-        border-radius: 0.9rem;
+        border-radius: 50px;
         font-size: 0.9rem;
-        background-color: #0e1117; /* Fundo escuro padrão */
+        background-color: #0b2859; /* Fundo escuro padrão */
     }
     .minha-tabela th {
         background-color: #10408d; /* Cor do cabeçalho */
@@ -45,10 +44,6 @@ st.markdown("""
     .minha-tabela td {
         padding: 8px;
         text-align: center;
-        border-bottom: 1px solid #31333f;
-    }
-    .minha-tabela-custom tr:hover {
-        background-color: #262730; /* Efeito hover na linha */
     }
 
 </style>
