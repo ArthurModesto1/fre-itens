@@ -32,31 +32,50 @@ st.markdown("""
     /* Estilização das Tabelas HTML */
     .minha-tabela-container {
         max-height: 400px;
+        overflow-x: auto;
         overflow-y: auto;
         border-radius: 1rem;
         border: 1px solid #10408d;
+        background-color: #0b2859;
     }
+
     .minha-tabela {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.85rem;
         background-color: #0b2859;
+        min-width: 800px;
     }
+
     .minha-tabela th {
         position: sticky;
         top: 0;
         background-color: #10408d;
         text-align: center;
-        padding: 8px;
+        z-index: 1;
     }
+
     .minha-tabela td {
-        padding: 6px;
+        padding: 8px;
         text-align: center;
         border-top: 1px solid #10408d;
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: nowrap; 
+    }
+
+    .minha-tabela-container::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    .minha-tabela-container::-webkit-scrollbar-track {
+        background: #05132a;
+        border-radius: 10px;
+    }
+    .minha-tabela-container::-webkit-scrollbar-thumb {
+        background: #10408d;
+        border-radius: 10px;
+    }
+    .minha-tabela-container::-webkit-scrollbar-thumb:hover {
+        background: #1a5abf;
     }
 </style>
 """, unsafe_allow_html=True)
