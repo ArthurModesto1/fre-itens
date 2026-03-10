@@ -16,7 +16,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    div[data-role="radio"] > div {
+    [data-testid="stWidgetLabel"] + div div[role="radiogroup"] > label > div:first-child {
         background-color: white !important;
         border-radius: 50%;
     }
