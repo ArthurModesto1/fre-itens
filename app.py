@@ -15,7 +15,7 @@ st.set_page_config(
    layout="wide"
 )
 
-st.logo(link_logo, icon_image=link_logo_curta.png)
+st.logo(link_logo, icon_image=link_logo_curta)
 
 # -------- CSS PARA CUSTOMIZAR RADIO -------- #
 st.markdown("""
