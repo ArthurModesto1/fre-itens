@@ -33,6 +33,7 @@ st.markdown("""
     .minha-tabela-container {
         max-height: 400px;
         overflow-y: auto;
+        overflow-x: hidden;
         border-radius: 1rem;
         border: 1px solid #10408d;
     }
