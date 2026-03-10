@@ -31,11 +31,12 @@ st.markdown("""
 
     /* Estilização das Tabelas HTML */
     .minha-tabela {
-        width: 100%;
+        width: 100% !important;
+        table-layout: fixed; 
         border-collapse: separate;
         border-spacing: 0;
         border-radius: 1rem;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         background-color: #0b2859; 
         overflow: hidden;
         border: 1px solid #10408d;
@@ -49,24 +50,26 @@ st.markdown("""
         border: none;
     }
     .minha-tabela td {
-        padding: 8px;
+        padding: 10px;
         text-align: center;
         color: white;
         border-top: 1px solid #10408d;
-
+        
         white-space: normal !important;
         word-wrap: break-word !important;
-        max-width: 400px;
+        overflow-wrap: break-word !important;
         vertical-align: middle;
     }
+
+    .minha-tabela td:last-child, .minha-tabela th:last-child {
+        width: 30%;
+        text-align: left;
+    }
+
     .minha-tabela tr:first-child td {
         border-top: none;
     }
-    .minha-tabela a {
-        color: #4fb3ff !important;
-        text-decoration: none;
-        font-weight: bold;
-    }
+
 </style>
 """, unsafe_allow_html=True)
 
