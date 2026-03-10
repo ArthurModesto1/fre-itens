@@ -151,13 +151,14 @@ if selected_item in DOWNLOAD_FILES:
 
            st.markdown("### 📊 Prévia dos dados")
 
-           preview_df = df_filtered_dl.head(5)
-
-           st.dataframe(
-                preview_df.style.set_properties(**{'text-align': 'center'}),
-                use_container_width=True
+            html_previa = df_filtered_dl.head(5).to_html(
+                index=False, 
+                classes='minha-tabela', 
+                escape=False
             )
 
+# 2. Exibindo na tela
+st.write(html_previa, unsafe_allow_html=True)
        else:
            st.warning("Nenhum dado encontrado.")
 
