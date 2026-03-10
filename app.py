@@ -46,7 +46,7 @@ st.markdown("""
     .minha-tabela td {
         padding: 8px;
         text-align: center;
-        border-top: 1px solid #10408d;
+        border-top: 1px solid #0b2859;
     }
 
 </style>
