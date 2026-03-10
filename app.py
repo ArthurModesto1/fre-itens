@@ -225,15 +225,12 @@ if not planos_empresa.empty:
         lambda x: f'<a href="{x}" target="_blank">Abrir Documento</a>'
     )
 
-    st.write(
-        planos_empresa.to_html(
-            escape=False,
-            index=False,
-            justify="center",
-            classes='minha-tabela'
-        ),
-        unsafe_allow_html=True
-    )
+    plans = planos_empresa.to_html(escape=False, index=False, justify="center", classes='minha-tabela')
+
+    st.markdown(
+                f'<div class="minha-tabela-container">{plans}</div>',
+                unsafe_allow_html=True
+            )
 else:
     st.info("Nenhum plano encontrado para esta empresa.")
 
