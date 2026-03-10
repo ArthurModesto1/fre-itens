@@ -16,13 +16,9 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    input[type="radio"] + label {
-        background-color: #ffffff !important;
-    }
-    
-    input[type="radio"]:checked + label {
-        background-color: #307ae0 !important;
-    }
+  div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] > div:first-child {
+    background-color: blue;
+  }
 
 </style>
 """, unsafe_allow_html=True)
