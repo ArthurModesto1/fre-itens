@@ -17,7 +17,7 @@ st.markdown("""
 <style>
 
 input[type="radio"]:unchecked + div {
-    background: white !important;
+    background-color: white !important;
 }
 
 </style>
