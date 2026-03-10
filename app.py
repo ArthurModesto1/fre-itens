@@ -30,37 +30,35 @@ st.markdown("""
     }
 
     /* Estilização das Tabelas HTML */
+    .minha-tabela-container {
+        max-height: 400px;
+        overflow-y: auto;
+        border-radius: 1rem;
+        border: 1px solid #10408d;
+    }
     .minha-tabela {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 1rem;
-        font-size: 0.9rem;
-        background-color: #0b2859; 
-        overflow: hidden;
-        border: 1px solid #10408d;
-        margin-bottom: 20px;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        background-color: #0b2859;
     }
     .minha-tabela th {
-        background-color: #10408d; 
-        text-align: center !important;
-        padding: 10px;
+        position: sticky;
+        top: 0;
+        background-color: #10408d;
+        text-align: center;
+        padding: 8px;
         color: white;
-        border: none;
     }
     .minha-tabela td {
-        padding: 8px;
+        padding: 6px;
         text-align: center;
         color: white;
         border-top: 1px solid #10408d;
-
-        white-space: normal !important;
-        word-wrap: break-word !important;
-        max-width: 400px;
-        vertical-align: middle;
-    }
-    .minha-tabela tr:first-child td {
-        border-top: none;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .minha-tabela a {
         color: #4fb3ff !important;
@@ -169,7 +167,10 @@ if selected_item in DOWNLOAD_FILES:
            
            html_previa = df_filtered_dl.head(5).to_html(index=False, classes='minha-tabela', escape=False)
            
-           st.write(html_previa, unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="minha-tabela-container">{html_previa}</div>',
+                unsafe_allow_html=True
+            )
 
        else:
            st.warning("Nenhum dado encontrado.")
