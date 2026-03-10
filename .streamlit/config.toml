@@ -1,18 +1,18 @@
 [theme]
 base = "dark"
-primaryColor = "#3b82f6"
-backgroundColor = "#0f172a"
-secondaryBackgroundColor = "#1e293b"
-textColor = "#e5e7eb"
-linkColor = "#3b82f6"
-borderColor = "#334155"
+primaryColor = "#307ae0"
+backgroundColor = "#05132a"
+secondaryBackgroundColor = "#10408d"
+textColor = "#ffffff"
+linkColor = "#307ae0"
+borderColor = "#0b2859"
 codeBackgroundColor = "#020617"
 showWidgetBorder = true
 baseRadius = "0.5rem"
-buttonRadius = "0.5rem"
-font = "sans serif"
-headingFont = "sans serif"
-codeFont = "monospace"
+buttonRadius = "0.9rem"
+font = "'Nunito Sans':https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+headingFont = "'Nunito Sans':https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+codeFont = "'Space Mono':https://fonts.googleapis.com/css2?family=Space+Mono&display=swap"
 chartCategoricalColors = [
 "#3b82f6",
 "#22c55e",
