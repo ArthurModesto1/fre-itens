@@ -17,11 +17,11 @@ st.markdown("""
 <style>
 
     input[type="radio"] + label {
-        background-color: #ffffff;
+        background-color: #ffffff !important;
     }
     
     input[type="radio"]:checked + label {
-        background-color: #307ae0;
+        background-color: #307ae0 !important;
     }
 
 </style>
@@ -85,7 +85,7 @@ with st.sidebar:
    lista_itens = ["8.1","8.2","8.3","8.4","8.5","8.6","8.7","8.8","8.9","8.10","8.11","8.12"]
 
    selected_item = st.radio(
-       "Item do FRE",
+       "Selecione o item do FRE",
        lista_itens
    )
 
