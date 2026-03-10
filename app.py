@@ -6,11 +6,16 @@ import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
+link_logo = "https://github.com/ArthurModesto1/fre-itens/raw/main/logo.png"
+link_logo_curta = "https://github.com/ArthurModesto1/fre-itens/raw/main/logo_curta.png"
+
 st.set_page_config(
    page_title="Visualizador FRE - CVM",
-   page_icon="📄",
+   page_icon=link_logo_curta,
    layout="wide"
 )
+
+st.logo(link_logo, icon_image=link_logo_curta.png)
 
 # -------- CSS PARA CUSTOMIZAR RADIO -------- #
 st.markdown("""
