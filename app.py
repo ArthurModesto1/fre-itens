@@ -16,9 +16,9 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-  div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] > div:first-child {
-    background-color: blue;
-  }
+    div[role="radiogroup"] > label[data-baseweb="radio"] {
+        background-color: white !important;
+    }
 
 </style>
 """, unsafe_allow_html=True)
