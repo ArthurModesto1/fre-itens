@@ -17,19 +17,19 @@ st.markdown("""
 <style>
 
 /* círculo não selecionado */
-div[role="radiogroup"] label div:first-child {
+[data-baseweb="radio"] div{
     background-color: white !important;
     border: 2px solid white !important;
 }
 
 /* círculo selecionado */
-div[role="radiogroup"] input:checked + div {
+[data-baseweb="radio"] input:checked + div {
     background-color: #1ed760 !important;
     border-color: #1ed760 !important;
 }
 
 /* tamanho da fonte dos itens */
-div[role="radiogroup"] label {
+[data-baseweb="radio"] label {
     font-size: 16px;
 }
 
