@@ -21,11 +21,11 @@ st.logo(link_logo, icon_image=link_logo_curta)
 st.markdown("""
 <style>
     /* Customização do Radio Button */
-    div[class="st-bg st-dp st-d7 st-d8 st-d9 st-da st-c0 st-as st-db st-dc st-dd st-c4 st-de st-bo st-c1 st-df st-dg st-cp st-b4 st-b5"] {
+    label[data-baseweb="radio"] > div {
         background-color: #05132a !important;
     }
 
-    div[class="st-dq st-d7 st-d8 st-d9 st-da st-dr st-b4 st-b5 st-ds"]{
+    label[data-baseweb="radio"] div > div{
         background-color: white !important;
     }
 
