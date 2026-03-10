@@ -14,8 +14,8 @@ st.set_page_config(
 
 # ---------------- HEADER ---------------- #
 st.markdown("""
-#📄 Visualizador de Documentos FRE - CVM
-Ferramenta para consulta rápida de documentos FRE de companhias abertas.
+# 📄 Visualizador de Documentos FRE - CVM
+ Ferramenta para consulta rápida de documentos FRE de companhias abertas.
 """)
 st.markdown("---")
 
