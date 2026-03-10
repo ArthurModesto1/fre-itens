@@ -29,6 +29,28 @@ st.markdown("""
         background-color: white !important;
     }
 
+    .minha-tabela {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: nunito-sans;
+        font-size: 0.9rem;
+        background-color: #0e1117; /* Fundo escuro padrão */
+    }
+    .minha-tabela th {
+        background-color: #10408d; /* Cor do cabeçalho */
+        text-align: center !important;
+        padding: 10px;
+        border-bottom: 2px solid #31333f;
+    }
+    .minha-tabela td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #31333f;
+    }
+    .minha-tabela-custom tr:hover {
+        background-color: #262730; /* Efeito hover na linha */
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -203,7 +225,8 @@ if not planos_empresa.empty:
        planos_empresa.to_html(
            escape=False,
            index=False,
-           justify="center"
+           justify="center",
+           classes='minha-tabela'
        ),
        unsafe_allow_html=True
    )
